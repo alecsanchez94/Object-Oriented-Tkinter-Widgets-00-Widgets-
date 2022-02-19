@@ -8,8 +8,7 @@ import pystray
 from PIL import Image
 from pystray import MenuItem as item
 import globals
-from Widgets import WidgetChangelog
-from Widgets import WidgetTextbox
+from Widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetConfig
 
 logger = logging.getLogger('global')
 
@@ -30,84 +29,122 @@ def configure_logging():
 
 class Program():
     def __init__(self):
-        # Frame.__init__(self, master)
         self.master = tk.Tk()
-        # self.master.overrideredirect(1)
-        self.master.geometry("1000x600")
+        self.master.withdraw()
+        self.master.geometry("600x500")
+        self.style = ttk.Style(self.master)
+        self.master.title(globals.title)
+        self.logger = logging.getLogger('global')
 
         self.style = ttk.Style(self.master)
         # https://stackoverflow.com/questions/42958927/how-to-change-tkinter-lableframe-border-color
         # self.style.configure("TLabelframe", background='black')
         # self.style.configure("TLabelframe", background='#808080')
 
-        self.master.title(globals.title)
-        self.logger = logging.getLogger('global')
+        self.container_console = tk.LabelFrame(self.master)
+        self.console = WidgetTextbox.WidgetTextbox(self.container_console, container_text="Console")
+        text_handler = WidgetTextbox.TextHandler(self.console)
+        self.logger.addHandler(text_handler)
 
+        # Load config file
         self.config_file = os.path.join(os.getcwd(), 'config.ini')
         self.config = None
         self.load_config_file()
 
 
-        # Declare widgets and containers here, pack/place/grid in render_content()
-        self.container_console = tk.LabelFrame(self.master)
-        self.console = WidgetTextbox.WidgetTextbox(self.container_console, container_text="Console")
-        text_handler = WidgetTextbox.TextHandler(self.console)
-        self.logger.addHandler(text_handler)
-        self.render_content()
-        self.logger.info("Application Loaded")
+
+        # Main Layout
+        self.left_column = tk.LabelFrame(self.master, text="Steps")
+        self.main_content = tk.LabelFrame(self.master, text="Content")
+
+        # Left Colum Buttons
+        self.button_home = tk.Button(self.left_column, text="Home", command=self.on_home_click)
+        self.button_config = tk.Button(self.left_column, text="Config", command=self.on_config_click)
+
+        # Widgets
+        self.widget_home = WidgetHome.Widget_Home(self.main_content, "Home")
+        self.widget_config = WidgetConfig.Widget_Config(self.main_content,
+                                                         "Config",
+                                                         self.config,
+                                                         self.callback_update_config
+                                                         )
+
+
+        self.render_window()
+        self.widget_home.show()
+        self.logger.info("Application Initialized")
 
         center(self.master)
         self.master.protocol('WM_DELETE_WINDOW', self.hide_window)
         self.master.mainloop()
 
 
-    def load_config_file(self):
-        logger.info("Loading Config File")
-        if not os.path.exists(self.config_file):
-            with open(self.config_file, 'w') as openedConfigFile:
-                openedConfigFile.write('[SETTINGS]')
-                openedConfigFile.close()
+    def callback_update_config(self, section, key, new_value):
+        self.config.set(section, key, new_value)
+        self.config_save()
+        self.resync_children_config()
 
+    def resync_children_config(self):
+        self.widget_config.resync_config_from_parent(self.config)
 
-            self.reset_config_file()
-            logger.warning("Config file not found, creating a new one with defaulted values")
-            return
+    def hide_widgets(self):
+        self.widget_home.hide()
+        self.widget_config.hide()
 
-        self.config = configparser.RawConfigParser()
-        self.config.read(self.config_file)
+    def on_home_click(self):
+        self.hide_widgets()
+        self.widget_home.show()
 
-        directories = [
-            os.path.exists(self.config.get("SETTINGS", 'export_directory'))
-        ]
-
-        for directory in directories:
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-
-
+    def on_config_click(self):
+        self.hide_widgets()
+        self.resync_children_config()
+        self.widget_config.show()
 
     def reset_config_file(self):
 
-        self.config = configparser.RawConfigParser()
+        if os.path.exists(self.config_file):
+            return
+
+        logger.warning("Config file not found, creating a new one with defaulted values")
+        with open(self.config_file, 'w') as openedConfigFile:
+            openedConfigFile.write('[SETTINGS]')
+            openedConfigFile.close()
+
         self.config.read(self.config_file)
 
-        relative_output_directory = os.path.join(os.getcwd(), "Exports")
-        if not os.path.exists(relative_output_directory):
-            os.makedirs(relative_output_directory)
+        ingest_directory = os.path.join(os.getcwd(), "IngestFiles")
+        if not os.path.exists(ingest_directory):
+            os.makedirs(ingest_directory)
 
-        self.config.set('SETTINGS', 'export_directory', str(relative_output_directory))
+        export_directory = os.path.join(os.getcwd(), "Exports")
+        if not os.path.exists(export_directory):
+            os.makedirs(export_directory)
+
+        self.config.set('SETTINGS', 'ingest_directory', str(ingest_directory))
+        self.config.set('SETTINGS', 'export_directory', str(export_directory))
 
         self.config_save()
-
-    def resync_children_config(self):
-        pass
-        # self.child_widget.update_config(self.config)
 
     def config_save(self):
         with open(self.config_file, 'w') as configfile:
             self.config.write(configfile)
 
-    def render_content(self):
+    def load_config_file(self):
+        logger.info("Loading Config File")
+        self.config = configparser.RawConfigParser()
+        self.reset_config_file()  # < -- Returns if config exists
+        self.config.read(self.config_file)
+
+        directories = [
+            os.path.exists(self.config.get("SETTINGS", 'ingest_directory')),
+            os.path.exists(self.config.get("SETTINGS", 'export_directory'))
+        ]
+
+        for dir in directories:
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+
+    def render_window(self):
 
         menu = tk.Menu(self.master)
         self.master.config(menu=menu)
@@ -120,22 +157,26 @@ class Program():
         menu.add_cascade(label="Help", menu=help_menu)
         help_menu.add_command(label="View Changelog", command=self.show_changelog)
 
-        self.console.show()
+        self.button_home.pack(side=tk.TOP, fill='x')
+        self.button_config.pack(side=tk.TOP, fill='x')
         self.container_console.pack(side=tk.BOTTOM, fill='x', anchor='s')
+        self.left_column.pack(side=tk.LEFT, fill='y', padx=3, pady=3, ipadx=15)
+        self.main_content.pack(fill='both', expand=True)
+
+        self.console.show()
 
 
     def show_changelog(self):
         WidgetChangelog.WidgetChangelog()
 
     def client_exit(self):
-        sys.exit()
+        self.master.destroy()
 
-    # Define a function for quit the window
-    def quit_window(self, icon, item):
+    def quit_window(self, icon):
         icon.stop()
         self.master.destroy()
 
-    def show_window(self, icon, item):
+    def show_window(self, icon):
         icon.stop()
         self.master.after(0,self.master.deiconify())
 
