@@ -62,12 +62,12 @@ class Program():
         self.button_config = tk.Button(self.left_column, text="Config", command=self.on_config_click)
 
         # template_widgets
-        self.widget_home = WidgetHome.Widget_Home(self.main_content, "Home")
-        self.widget_config = WidgetConfig.Widget_Config(self.main_content,
+        self.widget_home = WidgetHome.WidgetHome(self.main_content, "Home")
+        self.widget_config = WidgetConfig.WidgetConfig(self.main_content,
                                                          "Config",
-                                                         self.config,
-                                                         self.callback_update_config
-                                                         )
+                                                       self.config,
+                                                       self.callback_update_config
+                                                       )
 
 
         self.render_window()

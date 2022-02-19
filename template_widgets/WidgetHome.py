@@ -5,7 +5,7 @@ from tkhtmlview import HTMLLabel
 import globals
 import os
 
-class Widget_Home():
+class WidgetHome():
     def __init__(self,
                  parent: tk.LabelFrame,
                  container_text: str,

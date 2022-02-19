@@ -4,7 +4,7 @@ import logging
 import os
 
 
-class Widget_Config():
+class WidgetConfig():
     def __init__(self,
                  parent: tk.LabelFrame,
                  container_text: str,
