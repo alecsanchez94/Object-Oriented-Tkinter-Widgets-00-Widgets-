@@ -18,7 +18,7 @@ class Widget_Home():
 
     def load_html_data(self):
         data = ""
-        html_file = os.path.join(os.path.join(globals.parent_directory, "documentation"), "docs.html")
+        html_file = os.path.join(os.path.join(globals.parent_directory, "template_documentation"), "docs.html")
 
         with open(html_file) as f:
             data = f.read()

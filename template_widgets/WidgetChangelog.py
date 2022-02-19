@@ -1,7 +1,7 @@
 import tkinter as tk
 import logging
 import globals
-from Widgets import WidgetDynamicContainer
+from template_widgets import WidgetDynamicContainer
 
 
 class WidgetChangelog():

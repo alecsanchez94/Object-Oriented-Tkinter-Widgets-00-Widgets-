@@ -1,6 +1,6 @@
 from tkinter import ttk, messagebox
 import tkinter as tk
-from Widgets import WidgetProgressBar
+from template_widgets import WidgetProgressBar
 import logging
 
 

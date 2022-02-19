@@ -8,7 +8,7 @@ import pystray
 from PIL import Image
 from pystray import MenuItem as item
 import globals
-from Widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetConfig
+from template_widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetConfig
 
 logger = logging.getLogger('global')
 
@@ -61,7 +61,7 @@ class Program():
         self.button_home = tk.Button(self.left_column, text="Home", command=self.on_home_click)
         self.button_config = tk.Button(self.left_column, text="Config", command=self.on_config_click)
 
-        # Widgets
+        # template_widgets
         self.widget_home = WidgetHome.Widget_Home(self.main_content, "Home")
         self.widget_config = WidgetConfig.Widget_Config(self.main_content,
                                                          "Config",
@@ -182,7 +182,7 @@ class Program():
 
     def hide_window(self):
         self.master.withdraw()
-        image = Image.open(os.path.join(globals.parent_directory, "Images", "data.ico"))
+        image = Image.open(os.path.join(globals.parent_directory, "template_images", "data.ico"))
         menu = (item('Quit', self.quit_window), item('Show', self.show_window))
         icon = pystray.Icon("name", image, "My System Tray Icon", menu)
         icon.run()

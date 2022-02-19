@@ -21,7 +21,7 @@ class WidgetRichTextEditor:
         # new
         self.new_button = Button(name="toolbar_b2", borderwidth=1, command=self.new, width=20, height=20)
 
-        self.photo_new = Image.open(os.path.join(parent_directory, "icons", "new.png"))
+        self.photo_new = Image.open(os.path.join(parent_directory, "template_icons", "new.png"))
         self.photo_new = self.photo_new.resize((18, 18), Image.ANTIALIAS)
         self.image_new = ImageTk.PhotoImage(self.photo_new)
         self.new_button.config(image=self.image_new)
@@ -30,7 +30,7 @@ class WidgetRichTextEditor:
         # save
         self.save_button = Button(name="toolbar_b1", borderwidth=1, command=self.save, width=20, height=20)
 
-        self.photo_save = Image.open(os.path.join(parent_directory, "icons", "save.png"))
+        self.photo_save = Image.open(os.path.join(parent_directory, "template_icons", "save.png"))
         self.photo_save = self.photo_save.resize((18, 18), Image.ANTIALIAS)
         self.image_save = ImageTk.PhotoImage(self.photo_save)
         self.save_button.config(image=self.image_save)
@@ -39,7 +39,7 @@ class WidgetRichTextEditor:
         # open
         self.open_button = Button(name="toolbar_b3", borderwidth=1, command=self.open_file, width=20, height=20)
 
-        self.photo_open = Image.open(os.path.join(parent_directory, "icons", "open.png"))
+        self.photo_open = Image.open(os.path.join(parent_directory, "template_icons", "open.png"))
         self.photo_open = self.photo_open.resize((18, 18), Image.ANTIALIAS)
         self.image_open = ImageTk.PhotoImage(self.photo_open)
         self.open_button.config(image=self.image_open)
@@ -48,7 +48,7 @@ class WidgetRichTextEditor:
         # copy
         self.copy_button = Button(name="toolbar_b4", borderwidth=1, command=self.copy, width=20, height=20)
 
-        self.photo_copy = Image.open(os.path.join(parent_directory, "icons", "copy.png"))
+        self.photo_copy = Image.open(os.path.join(parent_directory, "template_icons", "copy.png"))
         self.photo_copy = self.photo_copy.resize((18, 18), Image.ANTIALIAS)
         self.image_copy = ImageTk.PhotoImage(self.photo_copy)
         self.copy_button.config(image=self.image_copy)
@@ -57,7 +57,7 @@ class WidgetRichTextEditor:
         # cut
         self.cut_button = Button(name="toolbar_b5", borderwidth=1, command=self.cut, width=20, height=20)
 
-        self.photo_cut = Image.open(os.path.join(parent_directory, "icons", "cut.png"))
+        self.photo_cut = Image.open(os.path.join(parent_directory, "template_icons", "cut.png"))
         self.photo_cut = self.photo_cut.resize((18, 18), Image.ANTIALIAS)
         self.image_cut = ImageTk.PhotoImage(self.photo_cut)
         self.cut_button.config(image=self.image_cut)
@@ -66,7 +66,7 @@ class WidgetRichTextEditor:
         # paste
         self.paste_button = Button(name="toolbar_b6", borderwidth=1, command=self.paste, width=20, height=20)
 
-        self.photo_paste = Image.open(os.path.join(parent_directory, "icons", "paste.png"))
+        self.photo_paste = Image.open(os.path.join(parent_directory, "template_icons", "paste.png"))
         self.photo_paste = self.photo_paste.resize((18, 18), Image.ANTIALIAS)
         self.image_paste = ImageTk.PhotoImage(self.photo_paste)
         self.paste_button.config(image=self.image_paste)
@@ -75,7 +75,7 @@ class WidgetRichTextEditor:
         # redo
         self.redo_button = Button(name="toolbar_b7", borderwidth=1, command=self.redo, width=20, height=20)
 
-        self.photo_redo = Image.open(os.path.join(parent_directory, "icons", "redo.png"))
+        self.photo_redo = Image.open(os.path.join(parent_directory, "template_icons", "redo.png"))
         self.photo_redo = self.photo_redo.resize((18, 18), Image.ANTIALIAS)
         self.image_redo = ImageTk.PhotoImage(self.photo_redo)
         self.redo_button.config(image=self.image_redo)
@@ -84,7 +84,7 @@ class WidgetRichTextEditor:
         # undo
         self.undo_button = Button(name="toolbar_b8", borderwidth=1, command=self.undo, width=20, height=20)
 
-        self.photo_undo = Image.open(os.path.join(parent_directory, "icons", "undo.png"))
+        self.photo_undo = Image.open(os.path.join(parent_directory, "template_icons", "undo.png"))
         self.photo_undo = self.photo_undo.resize((18, 18), Image.ANTIALIAS)
         self.image_undo = ImageTk.PhotoImage(self.photo_undo)
         self.undo_button.config(image=self.image_undo)
@@ -93,7 +93,7 @@ class WidgetRichTextEditor:
         # find
         self.find_button = Button(name="toolbar_b9", borderwidth=1, command=self.find_text, width=20, height=20)
 
-        self.photo_find = Image.open(os.path.join(parent_directory, "icons", "find.png"))
+        self.photo_find = Image.open(os.path.join(parent_directory, "template_icons", "find.png"))
         self.photo_find = self.photo_find.resize((18, 18), Image.ANTIALIAS)
         self.image_find = ImageTk.PhotoImage(self.photo_find)
         self.find_button.config(image=self.image_find)
@@ -126,7 +126,7 @@ class WidgetRichTextEditor:
         # bold
         self.bold_button = Button(name="formatbar_b1", borderwidth=1, command=self.bold, width=20, height=20, pady=10, padx=10)
 
-        self.photo_bold = Image.open(os.path.join(parent_directory, "icons", "bold.png"))
+        self.photo_bold = Image.open(os.path.join(parent_directory, "template_icons", "bold.png"))
         self.photo_bold = self.photo_bold.resize((18, 18), Image.ANTIALIAS)
         self.image_bold = ImageTk.PhotoImage(self.photo_bold)
         self.bold_button.config(image=self.image_bold)
@@ -135,7 +135,7 @@ class WidgetRichTextEditor:
         # italic
         self.italic_button = Button(name="formatbar_b2", borderwidth=1, command=self.italic, width=20, height=20)
 
-        self.photo_italic = Image.open(os.path.join(parent_directory, "icons", "italic.png"))
+        self.photo_italic = Image.open(os.path.join(parent_directory, "template_icons", "italic.png"))
         self.photo_italic = self.photo_italic.resize((18, 18), Image.ANTIALIAS)
         self.image_italic = ImageTk.PhotoImage(self.photo_italic)
         self.italic_button.config(image=self.image_italic)
@@ -144,7 +144,7 @@ class WidgetRichTextEditor:
         # underline
         self.underline_button = Button(name="formatbar_b3", borderwidth=1, command=self.underline, width=20, height=20)
 
-        self.photo_underline = Image.open(os.path.join(parent_directory, "icons", "underline.png"))
+        self.photo_underline = Image.open(os.path.join(parent_directory, "template_icons", "underline.png"))
         self.photo_underline = self.photo_underline.resize((18, 18), Image.ANTIALIAS)
         self.image_underline = ImageTk.PhotoImage(self.photo_underline)
         self.underline_button.config(image=self.image_underline)
@@ -153,7 +153,7 @@ class WidgetRichTextEditor:
         # strike
         self.strike_button = Button(name="formatbar_b4", borderwidth=1, command=self.strike, width=20, height=20)
 
-        self.photo_strike = Image.open(os.path.join(parent_directory, "icons", "strike.png"))
+        self.photo_strike = Image.open(os.path.join(parent_directory, "template_icons", "strike.png"))
         self.photo_strike = self.photo_strike.resize((18, 18), Image.ANTIALIAS)
         self.image_strike = ImageTk.PhotoImage(self.photo_strike)
         self.strike_button.config(image=self.image_strike)
@@ -162,7 +162,7 @@ class WidgetRichTextEditor:
         # font_color
         self.font_color_button = Button(name="formatbar_b5", borderwidth=1, command=self.change_color, width=20, height=20)
 
-        self.photo_font_color = Image.open(os.path.join(parent_directory, "icons", "font-color.png"))
+        self.photo_font_color = Image.open(os.path.join(parent_directory, "template_icons", "font-color.png"))
         self.photo_font_color = self.photo_font_color.resize((18, 18), Image.ANTIALIAS)
         self.image_font_color = ImageTk.PhotoImage(self.photo_font_color)
         self.font_color_button.config(image=self.image_font_color)
@@ -171,7 +171,7 @@ class WidgetRichTextEditor:
         # highlight
         self.highlight_button = Button(name="formatbar_b6", borderwidth=1, command=self.highlight, width=20, height=20)
 
-        self.photo_highlight = Image.open(os.path.join(parent_directory, "icons", "highlight.png"))
+        self.photo_highlight = Image.open(os.path.join(parent_directory, "template_icons", "highlight.png"))
         self.photo_highlight = self.photo_highlight.resize((18, 18), Image.ANTIALIAS)
         self.image_highlight = ImageTk.PhotoImage(self.photo_highlight)
         self.highlight_button.config(image=self.image_highlight)
@@ -180,7 +180,7 @@ class WidgetRichTextEditor:
         # align_center
         self.align_center_button = Button(name="formatbar_b7", borderwidth=1, command=self.align_center, width=20, height=20)
 
-        self.photo_align_center = Image.open(os.path.join(parent_directory, "icons", "align-center.png"))
+        self.photo_align_center = Image.open(os.path.join(parent_directory, "template_icons", "align-center.png"))
         self.photo_align_center = self.photo_align_center.resize((18, 18), Image.ANTIALIAS)
         self.image_align_center = ImageTk.PhotoImage(self.photo_align_center)
         self.align_center_button.config(image=self.image_align_center)
@@ -189,7 +189,7 @@ class WidgetRichTextEditor:
         # align_justify
         self.align_justify_button = Button(name="formatbar_b8", borderwidth=1, command=self.align_justify, width=20, height=20)
 
-        self.photo_align_justify = Image.open(os.path.join(parent_directory, "icons", "align-justify.png"))
+        self.photo_align_justify = Image.open(os.path.join(parent_directory, "template_icons", "align-justify.png"))
         self.photo_align_justify = self.photo_align_justify.resize((18, 18), Image.ANTIALIAS)
         self.image_align_justify = ImageTk.PhotoImage(self.photo_align_justify)
         self.align_justify_button.config(image=self.image_align_justify)
@@ -198,7 +198,7 @@ class WidgetRichTextEditor:
         # align_left
         self.align_left_button = Button(name="formatbar_b9", borderwidth=1, command=self.align_left, width=20, height=20)
 
-        self.photo_align_left = Image.open(os.path.join(parent_directory, "icons", "align-left.png"))
+        self.photo_align_left = Image.open(os.path.join(parent_directory, "template_icons", "align-left.png"))
         self.photo_align_left = self.photo_align_left.resize((18, 18), Image.ANTIALIAS)
         self.image_align_left = ImageTk.PhotoImage(self.photo_align_left)
         self.align_left_button.config(image=self.image_align_left)
@@ -207,7 +207,7 @@ class WidgetRichTextEditor:
         # align_right
         self.align_right_button = Button(name="formatbar_b10", borderwidth=1, command=self.align_right, width=20, height=20)
 
-        self.photo_align_right = Image.open(os.path.join(parent_directory, "icons", "align-right.png"))
+        self.photo_align_right = Image.open(os.path.join(parent_directory, "template_icons", "align-right.png"))
         self.photo_align_right = self.photo_align_right.resize((18, 18), Image.ANTIALIAS)
         self.image_align_right = ImageTk.PhotoImage(self.photo_align_right)
         self.align_right_button.config(image=self.image_align_right)
