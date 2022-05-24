@@ -2,14 +2,14 @@ from tkinter import ttk, messagebox
 import tkinter as tk
 import pandas as pd
 # from interface.TkWidgets.widget_table import CustomTable
-from template_widgets import WidgetTable
+from project.template_widgets import WidgetTable
 from datetime import datetime
 import os
 import logging
 import sqlite3
 import threading
 import math
-import sys
+
 
 def convert_size(size_bytes):
    if size_bytes == 0:

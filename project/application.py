@@ -1,15 +1,14 @@
 import configparser
 import logging
 import os
-import sys
 import tkinter as tk
 from tkinter import ttk
 import pystray
 from PIL import Image
 from pystray import MenuItem as item
 import globals
-from template_widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetDataExplorer
-from template_widgets import WidgetConfig
+from project.template_widgets import WidgetHome, WidgetConfig
+from project.template_widgets import WidgetChangelog, WidgetDataExplorer, WidgetTextbox
 
 logger = logging.getLogger('global')
 

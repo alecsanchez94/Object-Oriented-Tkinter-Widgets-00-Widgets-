@@ -2,7 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 import logging
 from tkhtmlview import HTMLLabel
-import globals
+from project import globals
 import os
 
 class WidgetHome():

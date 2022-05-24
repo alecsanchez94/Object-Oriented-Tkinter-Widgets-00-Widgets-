@@ -1,8 +1,7 @@
 from tkinter import ttk, messagebox, Frame, Button, filedialog, simpledialog, colorchooser, font
 import tkinter as tk
-import logging
 from PIL import ImageTk, Image
-from globals import parent_directory
+from project.globals import parent_directory
 import os
 
 

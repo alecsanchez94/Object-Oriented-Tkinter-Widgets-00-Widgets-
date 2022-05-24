@@ -1,11 +1,11 @@
 import sqlite3
-from tkinter import ttk, filedialog, messagebox
+from tkinter import ttk
 import tkinter as tk
 import logging
-import os
-from template_widgets import WidgetRoot, WidgetResizableContainer, WidgetTableWithFilter
+from project.template_widgets import WidgetResizableContainer, WidgetTableWithFilter
+from project.template_widgets import WidgetRoot
 import pandas as pd
-import globals
+from project import globals
 
 
 class WidgetDataExplorer(WidgetRoot.WidgetRoot):

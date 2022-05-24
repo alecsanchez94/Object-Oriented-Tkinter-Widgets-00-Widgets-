@@ -1,5 +1,6 @@
 import tkinter as tk
-from template_widgets import WidgetRoot
+from project.template_widgets import WidgetRoot
+
 
 class WidgetResizableContainer(tk.Frame):
 

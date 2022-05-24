@@ -14,7 +14,7 @@ python application.py
 
 ```
 
-![application_example](./readme_images/example.png)
+![application_example](project/readme_images/example.png)
 
 ## Features
 1. Object-Oriented Design Pattern with prebuilt widgets

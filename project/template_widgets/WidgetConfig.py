@@ -2,7 +2,9 @@ from tkinter import ttk, filedialog, messagebox
 import tkinter as tk
 import logging
 import os
-from template_widgets import WidgetRoot, WidgetResizableContainer
+from project.template_widgets import WidgetResizableContainer
+from project.template_widgets import WidgetRoot
+
 
 class Widget_Config(WidgetRoot.WidgetRoot):
     def __init__(self,
