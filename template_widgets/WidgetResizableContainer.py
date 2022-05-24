@@ -1,9 +1,10 @@
 import tkinter as tk
-from template_widgets import WidgetRoot
+from alecs_oo_tkinter_objects.template_widgets import WidgetRoot
 
 class WidgetResizableContainer(tk.Frame):
 
-    def __init__(self, parent_container: tk.LabelFrame,
+    def __init__(self,
+                 parent_container: tk.LabelFrame,
                  parent: WidgetRoot.WidgetRoot,
                  program_root: tk.Tk,
                  program_canvas: tk.Canvas

@@ -4,10 +4,12 @@ from tkinter import filedialog, simpledialog
 import pandas as pd
 import logging
 from threading import Thread
-from WidgetRoot import WidgetRoot
+from alecs_oo_tkinter_objects.template_widgets import WidgetRoot
 
-class WidgetIngest(WidgetRoot):
+class WidgetIngest(WidgetRoot.WidgetRoot):
     def __init__(self, parent, config):
+
+        super().__init__()
         self.logger = logging.getLogger('global')
         self.parent = parent
         self.config = config
