@@ -4,6 +4,17 @@ Greetings! I hope this finds you well.
 This is a collection of Object-Oriented tkinter object I've created for usage in my projects.
 
 I've designed this project to demonstrate how one may want to create a Tkinter application.
+Please feel free to use it as a starter template for your projects.
+
+## Installation
+```
+git clone https://github.com/alecsanchez94/alecs_oo_tkinter_objects.git
+pip install -r requirements.txt
+python application.py
+
+```
+
+![application_example](./readme_images/example.png)
 
 ## Features
 1. Object-Oriented Design Pattern with prebuilt widgets

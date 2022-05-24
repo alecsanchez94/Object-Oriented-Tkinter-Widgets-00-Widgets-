@@ -2,7 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 import pandas as pd
 import logging
-from WidgetResizableContainer import WidgetResizableContainer
+from template_widgets import WidgetResizableContainer
 
 class WidgetTable():
 

@@ -2,29 +2,42 @@ from tkinter import ttk, messagebox
 import tkinter as tk
 import pandas as pd
 # from interface.TkWidgets.widget_table import CustomTable
-from WidgetTable import WidgetTable
+from template_widgets import WidgetTable
 from datetime import datetime
 import os
 import logging
 import sqlite3
+import threading
+import math
+import sys
 
+def convert_size(size_bytes):
+   if size_bytes == 0:
+       return "0B"
+   size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+   i = int(math.floor(math.log(size_bytes, 1024)))
+   p = math.pow(1024, i)
+   s = round(size_bytes / p, 2)
+   return "%s %s" % (s, size_name[i])
 
 class Widget_TableWithFilter:
     def __init__(self,
                  parent,
                  db_path,
                  config,
-                 data_name,
+                 display_name,
                  table,
                  forced_sql_statement: str = None
                  ):
 
         # Declare data references
+        self.is_processing = False
         self.forced_sql_statement = None
         if forced_sql_statement is not None:
             self.forced_sql_statement = forced_sql_statement
         self.table_name = table
         self.parent = parent
+        self.display_name = display_name
         # self.program_root = program_root
         self.db_path = db_path
         self.config = config
@@ -34,13 +47,14 @@ class Widget_TableWithFilter:
         self.refresh_data()
 
         # Widget Containers
-        self.container = ttk.LabelFrame(parent, text=data_name)
+        self.container = ttk.LabelFrame(parent, text=display_name)
         self.table_container = ttk.LabelFrame(self.container)
         self.filter_container = ttk.LabelFrame(self.container)
+        self.filter_container.pack(side=tk.TOP, fill='x', pady=2)
         self.table_container.pack(side=tk.TOP, fill='x')
-        self.filter_container.pack(side=tk.BOTTOM, fill='x', pady=2)
 
-        self.table = WidgetTable(self.table_container, "", self.data_reference)
+
+        self.table = WidgetTable.WidgetTable(self.table_container, "", self.data_reference)
         self.table.table.bind("<Double-1>", self.on_record_click)
         self.table.show()
 
@@ -64,11 +78,47 @@ class Widget_TableWithFilter:
         self.reset_button = ttk.Button(self.filter_container, text="Reset", command=self.reset_table_and_search)
         self.reset_button.pack(side=tk.LEFT, anchor='w', padx=10, pady=10)
 
-        self.label_record_count = ttk.Label(self.filter_container,
+        self.button_export = ttk.Button(self.filter_container, text="Export", command=self.on_export_click)
+        self.button_export.pack(side=tk.RIGHT, ipadx=25)
+
+        self.label_record_count = ttk.Label(self.table_container,
                                             text="Record Count: {}".format(len(self.data_reference)))
-        self.label_record_count.pack(side=tk.BOTTOM)
+        self.label_record_count.pack(side=tk.RIGHT, anchor='sw', ipadx=10)
 
         self.reset_table_and_search()
+
+    def on_export_click(self):
+        if self.is_processing:
+            messagebox.showinfo(title="Warning",
+                                message="There is currently a process already running")
+            return
+
+
+
+        def task():
+            self.is_processing = True
+
+            file_name = os.path.join(
+                self.config.get("SETTINGS", "export_directory"),
+                "{}_export {}.xlsx".format(self.display_name, datetime.now().strftime("%d-%b-%Y %H-%M-%S"))
+                                     )
+            self.logger.info("Currently exporting to {}".format(file_name))
+
+            byte_usage = self.data_reference.memory_usage(index=True).sum()
+
+            mb_size = convert_size(byte_usage)
+            self.logger.info("Object size: {}".format(mb_size))
+
+
+            writer = pd.ExcelWriter(file_name, 'xlsxwriter')
+            self.data_reference.to_excel(writer, sheet_name=self.display_name, index=False)
+            writer.save()
+            messagebox.showinfo(title="Operation Complete",
+                                message="Exported data to {}".format(file_name))
+
+            self.is_processing = False
+
+        t1 = threading.Thread(target=task).start()
 
     def refresh_data(self):
         conn = sqlite3.connect(self.db_path)

@@ -1,17 +1,29 @@
 import tkinter as tk
+from template_widgets import WidgetRoot
 
 class WidgetResizableContainer(tk.Frame):
 
-    def __init__(self, parent: tk.Tk):
-        tk.Frame.__init__(self, parent)
+    def __init__(self, parent_container: tk.LabelFrame,
+                 parent: WidgetRoot.WidgetRoot,
+                 program_root: tk.Tk,
+                 program_canvas: tk.Canvas
+                 ):
+        tk.Frame.__init__(self, parent_container)
 
         self.parent = parent
+
+        self.parent_container = parent_container
+        self.program_root = program_root
+        self.program_canvas = program_canvas
+
+
         self.canvas = tk.Canvas(master=self)
         self.frame = tk.Frame(master=self.canvas)
+
         self.y_scrollbar = tk.Scrollbar(self, orient='vertical', command=self.canvas.yview)
         self.x_scrollbar = tk.Scrollbar(self, orient='horizontal', command=self.canvas.xview)
         self.y_scrollbar.pack(side=tk.RIGHT, fill='y')
-        self.x_scrollbar.pack(side=tk.BOTTOM, fill='x')
+        # self.x_scrollbar.pack(side=tk.BOTTOM, fill='x')
         self.canvas.create_window((0,0), window=self.frame, anchor="nw",
                                   tags="self.frame")
         self.canvas.configure(yscrollcommand=self.y_scrollbar.set)
@@ -20,19 +32,28 @@ class WidgetResizableContainer(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
         self.canvas.bind("")
 
+
+
     def bind_parent_config_update(self, dynamic_container_root):
         dynamic_container_root.bind("<Configure>", self.on_frame_configure)
+        self.program_canvas.bind("<Configure>", self.on_frame_configure)
+        self.program_root.bind("<Configure>", self.on_frame_configure)
 
     def on_frame_configure(self, event=None):
         '''Reset the scroll region to encompass the inner frame'''
+        if not self.parent.is_visible:
+            return
+
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         self.canvas.itemconfigure('self.frame',width=self.canvas.winfo_width())
+
+
 
     def hide(self):
         self.pack_forget()
 
-    def show(self, dynamic_container_root):
-        self.bind_parent_config_update(dynamic_container_root)
+    def show(self):
+        self.bind_parent_config_update(self.parent_container)
         self.on_frame_configure()
         self.canvas.pack(fill='both',expand=True)
         self.pack(fill='both', expand=True)

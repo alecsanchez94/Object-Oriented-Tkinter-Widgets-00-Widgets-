@@ -1,7 +1,7 @@
 import tkinter as tk
 import logging
 import globals
-from Widgets import WidgetResizableContainer
+from template_widgets import WidgetResizableContainer
 
 
 class WidgetChangelog():

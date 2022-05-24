@@ -8,10 +8,11 @@ import pystray
 from PIL import Image
 from pystray import MenuItem as item
 import globals
-from Widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetDataExplorer
-from Widgets import WidgetConfig
+from template_widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetDataExplorer
+from template_widgets import WidgetConfig
 
 logger = logging.getLogger('global')
+
 
 def configure_logging():
     logger.setLevel(logging.DEBUG)
@@ -28,7 +29,8 @@ def configure_logging():
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
-class Program():
+
+class Program:
     def __init__(self):
         self.master = tk.Tk()
         self.master.withdraw()
@@ -42,7 +44,14 @@ class Program():
         # self.style.configure("TLabelframe", background='black')
         # self.style.configure("TLabelframe", background='#808080')
 
-        self.container_console = tk.LabelFrame(self.master)
+        self.master_canvas = tk.Canvas(master=self.master)
+        self.master_canvas.pack(fill="both", expand=True)
+
+        # Main Layout
+        self.left_column = tk.LabelFrame(self.master_canvas, text="Steps")
+        self.main_content = tk.LabelFrame(self.master_canvas, text="Content")
+        self.container_console = tk.LabelFrame(self.master_canvas)
+
         self.console = WidgetTextbox.WidgetTextbox(self.container_console, container_text="Console")
         text_handler = WidgetTextbox.TextHandler(self.console)
         self.logger.addHandler(text_handler)
@@ -52,29 +61,26 @@ class Program():
         self.config = None
         self.load_config_file()
 
-
-
-        # Main Layout
-        self.left_column = tk.LabelFrame(self.master, text="Steps")
-        self.main_content = tk.LabelFrame(self.master, text="Content")
-
         # Left Colum Buttons
         self.button_home = tk.Button(self.left_column, text="Home", command=self.on_home_click)
         self.button_config = tk.Button(self.left_column, text="Config", command=self.on_config_click)
         self.button_ingest = tk.Button(self.left_column, text="Ingest", command=self.on_ingest_click)
-
+        self.button_data_explorer = tk.Button(self.left_column, text="Data Explorer",
+                                              command=self.on_data_explorer_click)
         # Widgets
-        self.widget_home = WidgetHome.Widget_Home(self.main_content, "Home")
+        self.widget_home = WidgetHome.WidgetHome(self.main_content, "Home")
         self.widget_config = WidgetConfig.Widget_Config(self.main_content,
-                                                         "Config",
-                                                         self.config,
-                                                         self.callback_update_config
-                                                         )
+                                                        self.config,
+                                                        self.callback_update_config,
+                                                        self.master_canvas,
+                                                        self.master
+                                                        )
         self.widget_data_explorer = WidgetDataExplorer.WidgetDataExplorer(
             self.main_content,
-            self.config
+            self.config,
+            self.master,
+            self.master_canvas
         )
-
 
         self.render_window()
         self.widget_home.show()
@@ -84,12 +90,15 @@ class Program():
         self.master.protocol('WM_DELETE_WINDOW', self.hide_window)
         self.master.mainloop()
 
+    def on_data_explorer_click(self):
+        self.hide_widgets()
+        self.widget_data_explorer.show()
+
     def on_ingest_click(self):
         pass
 
     def refresh_children(self):
         pass
-
 
     def callback_update_config(self, section, key, new_value):
         self.config.set(section, key, new_value)
@@ -103,6 +112,7 @@ class Program():
     def hide_widgets(self):
         self.widget_home.hide()
         self.widget_config.hide()
+        self.widget_data_explorer.hide()
 
     def on_home_click(self):
         self.hide_widgets()
@@ -172,12 +182,12 @@ class Program():
 
         self.button_home.pack(side=tk.TOP, fill='x')
         self.button_config.pack(side=tk.TOP, fill='x')
+        self.button_data_explorer.pack(side=tk.TOP, fill='x')
         self.container_console.pack(side=tk.BOTTOM, fill='x', anchor='s')
         self.left_column.pack(side=tk.LEFT, fill='y', padx=3, pady=3, ipadx=15)
         self.main_content.pack(fill='both', expand=True)
 
         self.console.show()
-
 
     def show_changelog(self):
         WidgetChangelog.WidgetChangelog(self.master)
@@ -191,7 +201,7 @@ class Program():
 
     def show_window(self, icon):
         icon.stop()
-        self.master.after(0,self.master.deiconify())
+        self.master.after(0, self.master.deiconify())
 
     def hide_window(self):
         self.master.withdraw()
@@ -218,8 +228,8 @@ def center(win):
     win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     win.deiconify()
 
+
 if __name__ == "__main__":
     configure_logging()
     logger.debug("New Log Method Test")
     app = Program()
-
