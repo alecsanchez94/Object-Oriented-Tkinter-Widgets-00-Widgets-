@@ -8,7 +8,8 @@ import pystray
 from PIL import Image
 from pystray import MenuItem as item
 import globals
-from Widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetConfig
+from Widgets import WidgetChangelog, WidgetTextbox, WidgetHome, WidgetDataExplorer
+from Widgets import WidgetConfig
 
 logger = logging.getLogger('global')
 
@@ -60,6 +61,7 @@ class Program():
         # Left Colum Buttons
         self.button_home = tk.Button(self.left_column, text="Home", command=self.on_home_click)
         self.button_config = tk.Button(self.left_column, text="Config", command=self.on_config_click)
+        self.button_ingest = tk.Button(self.left_column, text="Ingest", command=self.on_ingest_click)
 
         # Widgets
         self.widget_home = WidgetHome.Widget_Home(self.main_content, "Home")
@@ -68,6 +70,10 @@ class Program():
                                                          self.config,
                                                          self.callback_update_config
                                                          )
+        self.widget_data_explorer = WidgetDataExplorer.WidgetDataExplorer(
+            self.main_content,
+            self.config
+        )
 
 
         self.render_window()
@@ -78,6 +84,12 @@ class Program():
         self.master.protocol('WM_DELETE_WINDOW', self.hide_window)
         self.master.mainloop()
 
+    def on_ingest_click(self):
+        pass
+
+    def refresh_children(self):
+        pass
+
 
     def callback_update_config(self, section, key, new_value):
         self.config.set(section, key, new_value)
@@ -85,7 +97,8 @@ class Program():
         self.resync_children_config()
 
     def resync_children_config(self):
-        self.widget_config.resync_config_from_parent(self.config)
+        self.widget_config.resync_config(self.config)
+        self.widget_data_explorer.resync_config(self.config)
 
     def hide_widgets(self):
         self.widget_home.hide()
@@ -167,7 +180,7 @@ class Program():
 
 
     def show_changelog(self):
-        WidgetChangelog.WidgetChangelog()
+        WidgetChangelog.WidgetChangelog(self.master)
 
     def client_exit(self):
         self.master.destroy()

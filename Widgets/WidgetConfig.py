@@ -2,9 +2,9 @@ from tkinter import ttk, filedialog, messagebox
 import tkinter as tk
 import logging
 import os
+from Widgets import WidgetRoot
 
-
-class Widget_Config():
+class Widget_Config(WidgetRoot.WidgetRoot):
     def __init__(self,
                  parent: tk.LabelFrame,
                  container_text: str,
@@ -41,12 +41,12 @@ class Widget_Config():
         self.config_save_value("EMAIL", "behalf_of", behalf_of)
         messagebox.showinfo(title="Saved", message="Save Success")
 
-
-
-    def resync_config_from_parent(self, config):
-        self.config = config
+    def resync_config(self, new_config):
+        super().resync_config()
         self.label_ingest.config(text=self.config.get("SETTINGS", "ingest_directory"))
         self.label_export.config(text=self.config.get("SETTINGS", "export_directory"))
+
+
 
     def select_ingest_directory(self):
         ingest_directory = filedialog.askdirectory(initialdir=os.getcwd(),

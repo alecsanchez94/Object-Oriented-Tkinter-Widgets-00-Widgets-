@@ -1,18 +1,20 @@
 import tkinter as tk
 import logging
 import globals
-from Widgets import WidgetDynamicContainer
+from Widgets import WidgetResizableContainer
 
 
 class WidgetChangelog():
-    def __init__(self
+    def __init__(self,
+                 program_root
                  ):
+        self.program_root = program_root
         self.logger = logging.getLogger('global')
         self.logger.info("Widget Changelog loading")
 
         self.window = tk.Toplevel()
         self.window.title = "Change Log"
-        self.scrollable_container = WidgetDynamicContainer.WidgetDynamicContainer(self.window)
+        self.scrollable_container = WidgetDynamicContainer.WidgetResizableContainer(self.window)
         self.populate()
         self.show()
 
@@ -23,7 +25,7 @@ class WidgetChangelog():
             label.pack(side=tk.TOP, fill='x')
 
     def show(self):
-        self.scrollable_container.show()
+        self.scrollable_container.show(self.window)
 
     def hide(self):
         self.scrollable_container.hide()

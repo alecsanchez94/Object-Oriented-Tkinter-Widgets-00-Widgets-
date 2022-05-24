@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class WidgetDynamicContainer(tk.Frame):
+class WidgetResizableContainer(tk.Frame):
 
     def __init__(self, parent: tk.Tk):
         tk.Frame.__init__(self, parent)
@@ -16,12 +16,14 @@ class WidgetDynamicContainer(tk.Frame):
                                   tags="self.frame")
         self.canvas.configure(yscrollcommand=self.y_scrollbar.set)
         self.canvas.configure(xscrollcommand=self.x_scrollbar.set)
-        self.frame.bind("<Configure>", self.onFrameConfigure)
+        self.frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.bind("")
 
+    def bind_parent_config_update(self, dynamic_container_root):
+        dynamic_container_root.bind("<Configure>", self.on_frame_configure)
 
-    def onFrameConfigure(self, event=None):
+    def on_frame_configure(self, event=None):
         '''Reset the scroll region to encompass the inner frame'''
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         self.canvas.itemconfigure('self.frame',width=self.canvas.winfo_width())
@@ -29,10 +31,12 @@ class WidgetDynamicContainer(tk.Frame):
     def hide(self):
         self.pack_forget()
 
-    def show(self):
-        self.onFrameConfigure()
+    def show(self, dynamic_container_root):
+        self.bind_parent_config_update(dynamic_container_root)
+        self.on_frame_configure()
         self.canvas.pack(fill='both',expand=True)
         self.pack(fill='both', expand=True)
+
 
 
 class Scrollable(tk.Frame):
@@ -60,6 +64,10 @@ class Scrollable(tk.Frame):
         # assign this obj (the inner frame) to the windows item of the canvas
         self.windows_item = self.canvas.create_window(0,0, window=self, anchor=tk.NW)
 
+    def onFrameConfigure(self, event=None):
+        '''Reset the scroll region to encompass the inner frame'''
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        self.canvas.itemconfigure('self.frame',width=self.canvas.winfo_width())
 
     def __fill_canvas(self, event):
         "Enlarge the windows item to the canvas width"
@@ -69,3 +77,6 @@ class Scrollable(tk.Frame):
     def update(self):
         "Update the canvas and the scrollregion"
         self.update_idletasks()
+
+
+
