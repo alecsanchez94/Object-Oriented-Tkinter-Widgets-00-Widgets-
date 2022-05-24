@@ -189,7 +189,7 @@ class Program:
         self.console.show()
 
     def show_changelog(self):
-        WidgetChangelog.WidgetChangelog(self.master)
+        WidgetChangelog.WidgetChangelog(self.master, self.master_canvas, self)
 
     def client_exit(self):
         self.master.destroy()

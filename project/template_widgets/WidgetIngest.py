@@ -4,7 +4,7 @@ from tkinter import filedialog, simpledialog
 import pandas as pd
 import logging
 from threading import Thread
-from WidgetRoot import WidgetRoot
+from project.template_widgets import WidgetRoot
 
 class WidgetIngest(WidgetRoot):
     def __init__(self, parent, config):
